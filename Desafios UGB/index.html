@@ -1,26 +1,24 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rick & Morty Fetcher</title>
 
-  <!-- Fonts (cartoon / bold feel) -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Rubik:wght@300;400;700&display=swap" rel="stylesheet">
 
-  <!-- Main CSS -->
+
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- animated particles -->
   <div class="motes" id="motes" aria-hidden="true"></div>
 
   <main class="frame">
     <section class="panel" role="region" aria-label="Rick and Morty Fetcher">
       <header class="crest">
-        <!-- Portal-styled crest -->
         <svg viewBox="0 0 80 80" aria-hidden="true" class="portal" focusable="false">
           <defs>
             <radialGradient id="portalG" cx="50%" cy="40%">
@@ -32,7 +30,6 @@
           <circle cx="40" cy="36" r="22" fill="url(#portalG)" opacity="0.95" />
           <path d="M6,62 C26,42 54,42 74,62" fill="none" stroke="#0f0f0f" stroke-width="4" stroke-linecap="round" opacity="0.12"/>
         </svg>
-
         <div>
           <div class="title">Rick & Morty Fetcher</div>
           <div class="subtitle">Busque personagens além do multiverso (API pública)</div>
@@ -41,11 +38,12 @@
 
       <div class="controls">
         <button class="fetch" id="fetchBtn" aria-controls="result">Summon Character</button>
+        <button class="next" id="nextBtn" aria-controls="result">Próximo item</button>
         <div class="hint">ou pressione <strong>Barra de Espaço</strong></div>
       </div>
 
       <div class="content" id="result" aria-live="polite">
-        <!-- card injected here -->
+
       </div>
 
       <footer class="footer">
