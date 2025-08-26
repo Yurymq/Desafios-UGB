@@ -23,27 +23,58 @@ spawnMotes();
 addEventListener('resize', () => spawnMotes());
 
 
-const btn = document.getElementById('fetchBtn');
+const fetchBtn = document.getElementById('fetchBtn');
+const nextBtn = document.getElementById('nextBtn');
 const result = document.getElementById('result');
+
+
+const charactersList = [1, 2, 4, 10, 20];
+let currentIndex = 0;
+
 
 async function fetchCharacter() {
   try {
-    btn.disabled = true;
-    btn.textContent = 'Summoning…';
-
+    fetchBtn.disabled = true;
+    nextBtn.disabled = true;
+    fetchBtn.textContent = 'Summoning…';
+    
     const id = Math.floor(1 + Math.random() * 826);
     const res = await fetch(`https://rickandmortyapi.com/api/character/${id}`);
-    if (!res.ok) throw new Error('Failed to fetch');
+    if (!res.ok) throw new Error('Falha ao buscar personagem');
     const c = await res.json();
     renderCard(c);
-  } catch (err) {
+  } catch(err) {
     console.error(err);
-    result.innerHTML = `<div role="alert" class="badge">Algo deu errado ao invocar. Tente novamente.</div>`;
+    result.innerHTML = `<div role="alert" class="badge">Algo deu errado. Tente novamente.</div>`;
   } finally {
-    btn.disabled = false;
-    btn.textContent = 'Summon Character';
+    fetchBtn.disabled = false;
+    nextBtn.disabled = false;
+    fetchBtn.textContent = 'Summon Character';
   }
 }
+
+
+async function fetchNextCharacter() {
+  try {
+    fetchBtn.disabled = true;
+    nextBtn.disabled = true;
+
+    const id = charactersList[currentIndex];
+    currentIndex = (currentIndex + 1) % charactersList.length;
+
+    const res = await fetch(`https://rickandmortyapi.com/api/character/${id}`);
+    if (!res.ok) throw new Error('Falha ao buscar personagem');
+    const c = await res.json();
+    renderCard(c);
+  } catch(err) {
+    console.error(err);
+    result.innerHTML = `<div role="alert" class="badge">Algo deu errado. Tente novamente.</div>`;
+  } finally {
+    fetchBtn.disabled = false;
+    nextBtn.disabled = false;
+  }
+}
+
 
 function renderCard(c) {
   const lore = `Nascido (ou criado) em ${c.origin?.name || 'lugares estranhos'}, ${c.name} é ${c.species.toLowerCase()} e atualmente está ${c.status.toLowerCase()}. Última localização conhecida: ${c.location?.name || '—'}.`;
@@ -71,16 +102,18 @@ function renderCard(c) {
 function escapeHtml(str) {
   if (!str && str !== 0) return '';
   return String(str)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;')
+    .replaceAll('"','&quot;')
+    .replaceAll("'",'&#39;');
 }
 
-btn.addEventListener('click', fetchCharacter);
+
+fetchBtn.addEventListener('click', fetchCharacter);
+nextBtn.addEventListener('click', fetchNextCharacter);
 addEventListener('keydown', (e) => {
-  if (e.code === 'Space' && !e.repeat) {
+  if(e.code === 'Space' && !e.repeat){
     e.preventDefault();
     fetchCharacter();
   }
